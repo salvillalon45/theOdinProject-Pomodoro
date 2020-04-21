@@ -1,0 +1,101 @@
+/* Change the font of the website */
+body {
+  font-family: 'Sen', sans-serif;
+}
+
+/* Make the table be in the middle */
+table {
+  margin: 0px auto;
+}
+
+.intro {
+  text-align: center;
+}
+
+/* For button that contains zero */
+#num-btn-0 {
+  width: 187px;
+}
+
+/* For button that contains link to repo */
+#github-btn {
+  width: 140px;
+  background-color: #573fc4;
+}
+
+/* Hover effect for github button */
+#github-btn:hover {
+  background-color: red;
+}
+
+/* For operator buttons */
+#operator-btn {
+  background-color: #d6a738;
+}
+
+/* Hover effect for operator buttons */
+#operator-btn:hover {
+  background-color: #ffd324;
+}
+
+/* For util buttons */
+#util-btn {
+  background-color: #63625e;
+}
+
+/* Hover effect for util buttons */
+#util-btn:hover {
+  background-color: #545351;
+}
+
+/* Styles for each button */
+button {
+  font-family: 'Sen', sans-serif;
+  font-weight: bold;
+  background-color: #7a7a7a;
+  color: white;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 90px;
+}
+
+/* Hover effect for each button */
+button:hover {
+  background-color: #b3b1aa;
+}
+
+/* For button that takes you to GitHub Repo */
+#github-btn a {
+  text-decoration: none;
+  color: white;
+}
+
+/* For the display current box */
+.display-current {
+  background-color: #bcbd95;
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 20px;
+}
+
+/* For the display results box */
+.display-results {
+  background-color: #bcbd95;
+  overflow:auto;
+  height: 160px;
+  display: flex;
+  align-items: flex-end;
+  font-size: 20px;
+  flex-direction: column;
+}
+
+/* For the text appearing the in display results box */
+.display-results p {
+  margin-bottom: -10px;
+}
