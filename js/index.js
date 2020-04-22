@@ -1,248 +1,158 @@
 console.log("Inside index.js");
 
-let displayCurrent = document.querySelector(".display-current");
-let displayResults = document.querySelector(".display-results");
-let displayNumber = document.createElement("p");
+let timeContainer = document.querySelector(".time-container");
+let timeText = document.querySelector(".time-text");
+let sessionText = document.querySelector(".session-text");
+let messageText = document.querySelector(".message-text");
+let breakText = document.querySelector(".break-text");
 
-let currentNum = "";
-let displayResultNum = "";
-let previousNum = ""
-let operator= "";
-let debug = 1;
-let equalFlag = 0;
-let moreThanOneOperatorFlag = 0
+const WORK_TIME = "Work Time! Focus";
+const BREAK_TIME = "Break Time!";
+const BREAK_TIME_FINISH = "Break Finished!";
+// timeText.innerHTML = "25 : 00";
+// sessionText.innerHTML = "25";
+// breakText.innerHTML = "5"
 
-function displayHistory() {
-  // This function is used to display the previous calculations the user has made. It will be activated everytime the
-  // user presses = button. It means that the user has finished the calculation and is ready to be displayed in history
-  debug === 1 && console.log("Inside displayHistory()");
+timeText.innerHTML = "01 : 00";
+sessionText.innerHTML = "1";
+breakText.innerHTML = "1"
 
-  let expression = previousNum.toString() + operator.toString() + displayResultNum.toString() + " = " + currentNum.toString();
-  let displayCalculationResult = document.createElement("p");
-  displayCalculationResult.innerHTML = expression;
-  displayResults.append(displayCalculationResult);
-  equalFlag = 0;
-}
 
-function displayCurrentCalculations() {
-  // This function displays the current calculations the user is making
-  debug === 1 && console.log("Inside displayCurrentCalculations()");
+// Variables for Work Time
+// let startingMinutes = 25;
+let startingMinutes = 1;
+let time = startingMinutes * 60;
+let interval = 0;
+let currentSession = Number(sessionText.innerHTML);
 
-  displayNumber.textContent = currentNum;
-  displayCurrent.appendChild(displayNumber);
+// Variables for Break Time
+// let startingBreakMinutes = 5;
+let startingBreakMinutes = 1;
+let breakTime = startingBreakMinutes * 60;
+let intervalBreak = 0;
+let currentBreak = Number(breakText.innerHTML);
 
-  if (equalFlag === 1) {
-    displayHistory();
+// For handling starting the timer
+let startFlag = true;
+
+function startTimer() {
+  if (startFlag) {
+    // To call this function every second
+    interval = setInterval(updateCountdown, 1000);
+    messageText.innerHTML = WORK_TIME;
+    startFlag = false;
   }
 }
 
-function appendNumber(num) {
-  // This functions append the new number the user enter to the current number we are working on.
-  // If the user tries to put another decimal point it will not let it.
-  debug === 1 && console.log("Inside appendNumber()");
-
-  if (num.toString() === "." && currentNum.toString().includes(".")) {
-      alert("It already has a decimal!");
-  }
-  else {
-    currentNum = currentNum.toString() + num.toString();
-  }
+function stopTimer() {
+  startFlag = true;
+  clearInterval(interval);
 }
 
-function selectNum(num) {
-  // This function retrieves the number the user picked from the buttons. It then calls appendNumber to append to what we currently have
-  // Then it calls displayCurrentCalculations to display it
-  debug === 1 && console.log("Inside selectNum()");
-
-  appendNumber(num);
-  displayCurrentCalculations();
+function resetTimer() {
+  console.log("In reset");
+  clearInterval(interval);
+  time = startingMinutes * 60;
+  interval = 0;
+  timeText.innerHTML = `${sessionText.innerHTML} : ${"00"}`;
+  time = Number(sessionText.innerHTML) * 60;
+  startFlag = true;
+  messageText.innerHTML = "";
 }
 
-function selectEqual(equal) {
-  // This function is used everytime the user calls the equal button
-  debug === 1 && console.log("Inside selectEqual()");
-
-  // The case when the user input = sign before getting all numbers ready
-  if (previousNum.length === 0 || currentNum.length === 0) {
+function increaseBreak() {
+  console.log("insertBreak");
+  if (currentBreak === 60) {
     return;
   }
 
-  equalFlag = 1;
-
-  performCalculationForEqual();
+  currentBreak++;
+  console.log("What is currentBreak:: " + currentBreak);
+  breakText.innerHTML = currentBreak;
 }
 
-function performCalculationForEqual() {
-  // This function will be called when the user just performs calculation on two numbers such as 2 + 2
-  debug === 1 && console.log("Inside performCalculationForEqual()");
+function decreaseBreak() {
+  console.log("decreaseBreak");
+  if (currentBreak === 1) {
+    return;
+  }
 
-  // This is needed for the display previous results. We want to keep the currentNum before it gets overwritten
-  displayResultNum = currentNum;
-
-  // Overwrite currentNum to the result
-  let result = operate();
-  console.log("What is result");
-  currentNum = result;
-  displayCurrentCalculations();
-
-  // Overwrite for next calculation
-  currentNum = "";
-  previousNum = "";
-  operator = "";
-
-  printNums();
-  moreThanOneOperatorFlag = 0;
+  currentBreak--;
+  console.log("What is currentBreak:: " + currentBreak);
+  breakText.innerHTML = currentBreak;
 }
 
-function performCalculationForMoreThanOneOperator() {
-  // This function will be called when the user just performs calculation on more than two numbers like 2 + 2 - 4
-  debug === 1 && console.log("Inside performCalculationForMoreThanOneOperator()");
+function increaseSession() {
+  if (currentSession === 60) {
+    return;
+  }
 
-  // This is needed for the display previous results. We want to keep the currentNum before it gets overwritten
-  displayResultNum = currentNum;
-
-  // Overwrite currentNum to the result
-  let result = operate();
-  currentNum = result;
-
-  // Display the information
-  displayCurrentCalculations();
-  displayHistory();
-
-  // For the next calcuation
-  previousNum = result;
+  currentSession++;
+  console.log("what is currentSession:: " + currentSession);
+  sessionText.innerHTML = currentSession;
+  timeText.innerHTML = `${currentSession} : ${"00"}`;
+  time = currentSession * 60;
 }
 
-function printNums() {
-  // Use this functions to help print out this global variables. This really helped me out debug a lot of things
+function decreaseSession() {
+  console.log("in decreaseSession()");
+  if (currentSession === 1) {
+    return;
+  }
 
-  console.log("operator:: " + operator);
-  console.log("previousNum:: " + previousNum);
-  console.log("currentNum:: " + currentNum);
+  currentSession--;
+  sessionText.innerHTML = currentSession;
+  timeText.innerHTML = `${currentSession} : ${"00"}`;
+  time = currentSession * 60;
+  console.log("Ehat is time:: " + time);
 }
 
-function selectOperator(newOperator) {
-  // For when user enters an operator
-  debug === 1 && console.log("Inside selectOperator()");
+function updateCountdown() {
+  console.log("updateCountdown");
+  console.log("What is time:: " + time);
+  const minutes = Math.floor(time / 60);
+  let seconds = time % 60;
 
-  // This is to support more than one operator
-  if (moreThanOneOperatorFlag >= 1) {
-    performCalculationForMoreThanOneOperator();
+  if (seconds < 10) {
+    seconds = "0" + seconds;
   }
 
-  operator = newOperator;
-  // Store the previous number the user entered
-  previousNum = currentNum;
+  if (minutes === 0 && seconds === "00") {
+      messageText.innerHTML = BREAK_TIME;
+      timeText.innerHTML = "";
 
-  // We want to clear the currentNum for the next number the user will pick
-  currentNum = "";
+      updateCountdownBreak();
+      return;
+  }
 
-  // Increase the flag. If the flag is more than one that means that they are chaining expressions
-  moreThanOneOperatorFlag++;
+  console.log("minutes:: " + minutes);
+  console.log("seconds:: " + seconds);
+  timeText.innerHTML = `${minutes} : ${seconds}`;
+  timeContainer.append(timeText);
+
+  time--;
 }
 
-function clearDisplayResults() {
-  // Clear the display results. Called when the user clicks on AC
-  debug === 1 && console.log("Inside clearDisplayResults()");
+function updateCountdownBreak() {
+  console.log("updateCountdownBreak");
+  console.log("What is breakTime:: " + breakTime);
+  const minutes = Math.floor(breakTime / 60);
+  let seconds = breakTime % 60;
 
-  while (displayResults.firstChild) {
-    displayResults.removeChild(displayResults.firstChild);
+  if (seconds < 10) {
+    seconds = "0" + seconds;
   }
+
+  if (minutes === 0 && seconds === "00") {
+    messageText.innerHTML = BREAK_TIME_FINISH;
+    return;
+  }
+
+  console.log("minutes:: " + minutes);
+  console.log("seconds:: " + seconds);
+
+  timeText.innerHTML = `${minutes} : ${seconds}`;
+  timeContainer.append(timeText);
+
+  breakTime--;
 }
-
-function selectUtil(util) {
-  // Depending on the utility they select. It will do a different action
-  debug === 1 && console.log("Inside selectUitl()");
-
-  if (util === "AC") {
-    // Clear everything. This means reset the global variables
-    debug === 1 && console.log("clearing calculator");
-    currentNum = "";
-    previousNum = "";
-    operator = "";
-    displayCurrentCalculations();
-    clearDisplayResults();
-  }
-  else if (util === "DEL") {
-    // Remove the recent number they inputed
-    debug === 1 && console.log("removing most recent number");
-
-    currentNum = "";
-    displayCurrentCalculations();
-  }
-  else if (util === "%") {
-    // Turn the number into a decimal
-    debug === 1 && console.log("turning number into decimal");
-
-    currentNum = currentNum / 100;
-    displayCurrentCalculations();
-  }
-}
-
-function add(num1, num2) {
-  currentNum = parseFloat(num1) + parseFloat(num2);
-  return currentNum;
-}
-
-function subtract(num1, num2) {
-  currentNum = parseFloat(num1) - parseFloat(num2);
-  return currentNum;
-}
-
-function multiply(num1, num2) {
-  currentNum = parseFloat(num1) * parseFloat(num2);
-  return currentNum;
-}
-
-function divide(num1, num2) {
-  if (parseInt(num2) === 0) {
-    currentNum = "Cannot Divide By Zero";
-    return currentNum;
-  }
-
-  currentNum = parseFloat(num1) / parseFloat(num2);
-  return currentNum;
-}
-
-function operate() {
-  debug === 1 && console.log("Inside operate()");
-  let result = "";
-
-  if (operator === "+") {
-    debug === 1 && console.log("Going to add");
-    result = add(previousNum, currentNum);
-  }
-   else if (operator === "-") {
-    debug === 1 && console.log("Going to subtract");
-    result = subtract(previousNum, currentNum);
-  }
-  else if (operator === "x") {
-    debug === 1 && console.log("Going to multiply");
-    result = multiply(previousNum, currentNum);
-  }
-  else if (operator === "/") {
-    debug === 1 && console.log("Going to divide");
-    result = divide(previousNum, currentNum);
-  }
-
-  debug === 1 && console.log("Calculation result is:: " + result);
-  return Math.round((result + Number.EPSILON) * 100) / 100
-}
-
-// KeyBoard Support
-// ------------------------------------------------------
-this.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === '=') {
-      selectEqual();
-  }
-  if (e.key === 'Backspace' || e.key === 'Delete') {
-    selectUtil("DEL");
-  }
-  if (e.key >= 0 && e.key <= 9) {
-    appendNumber(e.key);
-    displayCurrentCalculations();
-  }
-  if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
-    selectOperator(e.key);
-  }
-});

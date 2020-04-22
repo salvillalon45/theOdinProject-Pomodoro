@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>The Odin Project: Calculator</title>
+    <title>The Odin Project: Pomodoro</title>
     <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="icon" href= "./images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700;800&display=swap" rel="stylesheet">
@@ -10,59 +10,38 @@
 
   <body>
     <!-- Help from: https://codeburst.io/making-a-calculator-with-basic-html-css-and-javascript-part-1-1e4288f0bea1 -->
-    <div class="intro text-center">
-      <h1>Calculator</h1>
+    <div class="intro">
+      <h1>Pomodoro</h1>
       <h2>Made by <a href="https://salvillalon45.github.io/">Salvador Villalon</a></h2>
-      <p><button id="github-btn"><a href="https://github.com/salvillalon45/theOdinProject-Calculator">The Code</a></button></p>
+      <p><button id="github-btn"><a href="https://github.com/salvillalon45/theOdinProject-Pomodoro">The Code</a></button></p>
+      <p>The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro, from the Italian word for 'tomato', after the tomato-shaped kitchen timer that Cirillo used as a university student</p>
     </div>
 
-    <table>
-      <tr>
-        <td colspan="4">
-            <div class="display-results" id="display-results">
-              <!-- Here will go previous calculation -->
-            </div>
-         </td>
-      </tr>
-      <tr>
-        <td colspan="4">
-            <div class="display-current" id="display">
-              <!-- Here will go numbers -->
-            </div>
-         </td>
-      </tr>
-      <tr>
-        <td><button id="util-btn" value="AC" onclick="selectUtil(this.value)">AC</button></td>
-        <td><button id="util-btn" value="DEL" onclick="selectUtil(this.value)">DEL</button></td>
-        <td><button id="util-btn" value="%" onclick="selectUtil(this.value)">%</button></td>
-        <td><button id="operator-btn" value="/" onclick="selectOperator(this.value)">/</button></td>
-      </tr>
-      <tr>
-        <td><button id="num-btn" value=7 onclick="selectNum(this.value)">7</button></td>
-        <td><button id="num-btn" value=8 onclick="selectNum(this.value)">8</button></td>
-        <td><button id="num-btn" value=9 onclick="selectNum(this.value)">9</button></td>
-        <td><button id="operator-btn" value="x" onclick="selectOperator(this.value)">x</button></td>
-      </tr>
-      <tr>
-        <td><button id="num-btn" value=4 onclick="selectNum(this.value)">4</button></td>
-        <td><button id="num-btn" value=5 onclick="selectNum(this.value)">5</button></td>
-        <td><button id="num-btn" value=6 onclick="selectNum(this.value)">6</button></td>
-        <td><button id="operator-btn" value="-" onclick="selectOperator(this.value)">-</button></td>
-      </tr>
-      <tr>
-        <td><button id="num-btn" value=1 onclick="selectNum(this.value)">1</button></td>
-        <td><button id="num-btn" value=2 onclick="selectNum(this.value)">2</button></td>
-        <td><button id="num-btn" value=3 onclick="selectNum(this.value)">3</button></td>
-        <td><button id="operator-btn" value="+" onclick="selectOperator(this.value)">+</button></td>
-      </tr>
-    </table>
-    <table>
-      <tr>
-        <td><button id="num-btn-0" value=0 onclick="selectNum(this.value)">0</button></td>
-        <td><button id="num-btn" value=. onclick="selectNum(this.value)">.</button></td>
-        <td><button id="operator-btn" value="=" onclick="selectEqual(this.value)">=</button></td>
-      </tr>
-    </table>
+    <div class="time-container">
+      <!-- Here insert countdown timer -->
+      <p class="time-text"></p>
+    </div>
+
+    <div class="message-container">
+      <p class="message-text"></p>
+    </div>
+
+    <div class="control-container">
+      <button id="start-btn" onclick="startTimer()">Start</button>
+      <button id="stop-btn" onclick="stopTimer()">Stop</button>
+      <button id="reset-btn" onclick="resetTimer()">Reset</button>
+    </div>
+
+    <div class="adjust-container">
+      <p>Session</p>
+      <button id="session-btn" onclick="increaseSession()">Increase</button>
+      <p class="session-text"></p>
+      <button id="session-btn" onclick="decreaseSession()">Decrease</button>
+      <p>Break</p>
+      <button id="break-btn" onclick="increaseBreak()">Increase</button>
+      <p class="break-text"></p>
+      <button id="session-btn" onclick="decreaseBreak()">Decrease</button>
+    </div>
   </body>
   <script src="./js/index.js"></script>
 </html>
