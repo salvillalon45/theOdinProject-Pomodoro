@@ -9,11 +9,23 @@ body {
   text-align: center;
 }
 
+
+/*
+  CSS Varialbles. This turned out to be really useful! I learned from here:
+  https://medium.com/@fionnachan/dynamic-number-of-rows-and-columns-with-css-grid-layout-and-css-variables-cb8e8381b6f2
+*/
+/* --------------------------------------- */
+:root {
+  --circleColor: white;
+}
+
+
 /* Time Container*/
 /* --------------------------------------- */
 .time-container {
   text-align: center;
   font-size: 50px;
+  margin-bottom: -50px;
 }
 
 /* Message Container */
@@ -21,6 +33,29 @@ body {
 .message-container {
   text-align: center;
   font-size: 50px;
+  margin-top: -40px;
+}
+
+
+/* Checkmarks Container */
+/* --------------------------------------- */
+.checkmarks-container {
+  display: flex;
+  justify-content: center;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 10px;
+  border-style: solid;
+  border-color: coral;
+}
+
+.circle-color-background {
+  background-color: var(--circleColor);
 }
 
 /* GitHub Button */
