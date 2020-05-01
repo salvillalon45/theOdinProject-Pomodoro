@@ -3,6 +3,13 @@
 /* Change the font of the website */
 body {
   font-family: 'Sen', sans-serif;
+  background-color: #f0f0f0;
+}
+
+.intro h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 50px;
+  color: #50045c;
 }
 
 .intro {
@@ -24,7 +31,7 @@ body {
 /* --------------------------------------- */
 .time-container {
   text-align: center;
-  font-size: 50px;
+  font-size: 70px;
   margin-bottom: -50px;
 }
 
@@ -34,8 +41,8 @@ body {
   text-align: center;
   font-size: 50px;
   margin-top: -40px;
+  margin-bottom: -50px;
 }
-
 
 /* Checkmarks Container */
 /* --------------------------------------- */
@@ -58,29 +65,115 @@ body {
   background-color: var(--circleColor);
 }
 
+/* Control Container */
+/* --------------------------------------- */
+.control-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Styles for Control buttons */
+/* --------------------------------------- */
+.control-button {
+  font-size: 3.5rem;
+}
+
+.fa {
+  margin-top: -40px;
+  padding: 80px;
+}
+
+.fa-play-circle {
+  color: #70d631;
+}
+
+.fa-play-circle:hover {
+  color: #419e08;
+}
+
+.fa-pause-circle {
+  color: #7b6aba;
+}
+
+.fa-pause-circle:hover {
+  color: #644db8;
+}
+
+.fa-refresh {
+  color: #f24b4b;
+}
+
+.fa-refresh:hover {
+  color: #a32f2f;
+}
+
+
+/* Adjust Container */
+/* --------------------------------------- */
+.session-container, .break-container, .long-break-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+table {
+  margin: 0 auto;
+}
+
+.adjust-text {
+  padding-right: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.adjust-table p {
+  font-weight: bold;
+}
+
+.adjust-decrease, .adjust-increase {
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 10px;
+}
+
+.adjust-table .fa {
+  font-size: 3.5rem;
+  display: inline;
+}
+
+.adjust-increase {
+  color: #558c07;
+}
+
+.adjust-decrease {
+  color: #d9993f;
+}
+
+.adjust-table button {
+  background-color: #911aa3;
+  font-weight: bold;
+  color: white;
+  border-radius: 20px;
+  border: none;
+  padding-left: 25px;
+  padding-right: 25px;
+  text-align: center;
+  display: inline-block;
+  font-size: 35px;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-family: 'Sen', sans-serif;
+}
+
+.adjust-table button:hover {
+  background-color: #c023d9;
+}
+
 /* GitHub Button */
 /* --------------------------------------- */
 #github-btn {
   width: 140px;
   background-color: #573fc4;
-}
-
-#github-btn:hover {
-  background-color: red;
-}
-
-#github-btn a {
-  text-decoration: none;
-  color: white;
-}
-
-
-/* Styles for buttons */
-/* --------------------------------------- */
-button {
-  font-family: 'Sen', sans-serif;
   font-weight: bold;
-  background-color: #573fc4;
   color: white;
   border: none;
   padding: 15px 32px;
@@ -89,9 +182,14 @@ button {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+  font-family: 'Sen', sans-serif;
 }
 
-/* Hover effect for each button */
-button:hover {
-  background-color: red;
+#github-btn:hover {
+  background-color: #2807b8;
+}
+
+#github-btn a {
+  text-decoration: none;
+  color: white;
 }

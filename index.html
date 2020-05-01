@@ -2,22 +2,22 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>The Odin Project: Pomodoro</title>
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <title class="title-text">The Odin Project: Pomodoro</title>
     <link rel="icon" href= "./images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
   </head>
 
   <body>
     <div class="intro">
-      <h1>Pomodoro</h1>
+      <h1>Pomodoro Clock</h1>
       <h2>Made by <a href="https://salvillalon45.github.io/">Salvador Villalon</a></h2>
       <p><button id="github-btn"><a href="https://github.com/salvillalon45/theOdinProject-Pomodoro">The Code</a></button></p>
-      <p>The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro, from the Italian word for 'tomato', after the tomato-shaped kitchen timer that Cirillo used as a university student</p>
     </div>
 
     <div class="time-container">
-      <!-- Here insert countdown timer -->
       <p class="time-text"></p>
     </div>
 
@@ -33,21 +33,36 @@
     </div>
 
     <div class="control-container">
-      <button id="start-btn" onclick="startTimer()">Start</button>
-      <button id="stop-btn" onclick="stopTimer()">Stop</button>
-      <button id="reset-btn" onclick="resetTimer()">Reset</button>
+      <div class="control-button text-center">
+        <i class="fa fa-play-circle" aria-hidden="true" onclick="startButton()"></i>
+        <i class="fa fa-pause-circle" aria-hidden="true" onclick="stopButton()"></i>
+        <i class="fa fa-refresh" aria-hidden="true" onclick="resetButton()"></i>
+      </div>
     </div>
 
-    <div class="adjust-container">
-      <p>Session</p>
-      <button id="session-btn" onclick="increaseSession()">Increase</button>
-      <p class="session-text"></p>
-      <button id="session-btn" onclick="decreaseSession()">Decrease</button>
-      <p>Break</p>
-      <button id="break-btn" onclick="increaseBreak()">Increase</button>
-      <p class="break-text"></p>
-      <button id="session-btn" onclick="decreaseBreak()">Decrease</button>
-    </div>
+    <table class="adjust-table">
+      <tr>
+        <td class="adjust-text"><p>Session</p></td>
+        <td class="adjust-increase"><button class="session-btn" onclick="increaseSession()">+</button></td>
+        <td><p class="session-text"></p></td>
+        <td class="adjust-decrease"><button class="session-btn" onclick="decreaseSession()">-</button></td>
+      </tr>
+
+      <tr>
+        <td class="adjust-text"><p>Break</p></td>
+        <td class="adjust-increase"><button class="break-btn" onclick="increaseBreak()">+</button></td>
+        <td><p class="break-text"></p></td>
+        <td class="adjust-decrease"><button class="break-btn" onclick="decreaseBreak()">-</button></td>
+      </tr>
+
+      <tr>
+        <td class="adjust-text"><p>Long Break</p></td>
+        <td class="adjust-increase"><button class="long-break-btn" onclick="increaseLongBreak()">+</button></td>
+        <td><p class="long-break-text"></p></td>
+        <td class="adjust-decrease"><button class="long-break-btn" onclick="decreaseLongBreak()">-</button></td>
+      </tr>
+    </table>
+
   </body>
   <script src="./js/index.js"></script>
 </html>
