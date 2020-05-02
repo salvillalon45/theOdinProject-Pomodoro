@@ -58,6 +58,10 @@ let longBreakTimeFlag = false;
 // To keep track of sets
 let checkmark = 0;
 
+let startBreakChime = new Audio("assets/sounds/timer_end.mp3");
+let endBreakChime = new Audio("assets/sounds/break.wav");
+let endCycleChime = new Audio('assets/sounds/long-break.wav');
+
 function startButton() {
     console.log("Inside startButton()");
 
@@ -84,6 +88,7 @@ function startButton() {
         console.log("Going to start long break session");
         // longBreakTimeFlag = false;
         longBreakTimeFlag = true;
+        messageText.innerHTML = "";
         startLongBreak();
         return;
     }
@@ -129,18 +134,21 @@ function resetButton() {
     if (!longBreakTimeFlag) {
         console.log("Going to reset long break session");
         resetLongBreak();
+        resetCircleColor();
         return;
     }
 
     if (workTimeFlag) {
         console.log("Going to reset work session");
         resetWork();
+        resetCircleColor();
         return;
     }
 
     if (breakTimeFlag) {
         console.log("Going to reset break session");
         resetBreak();
+        resetCircleColor();
         return;
     }
 }
@@ -172,7 +180,6 @@ function resetWork() {
     // timeText.innerHTML = `${sessionText.innerHTML} : ${"00"}`;
     // time = Number(sessionText.innerHTML) * 60;
     messageText.innerHTML = "";
-    resetCircleColor();
 }
 
 function increaseSession() {
@@ -230,13 +237,17 @@ function updateCountdown() {
         seconds = "0" + seconds;
     }
 
+    checkForFinishedSet();
+
     if (minutes === 0 && seconds === "00") {
         console.log("Break time Start");
+
+        startBreakChime.play();
+
         console.log("breakTimeFlag:: " + breakTimeFlag);
         breakTimeFlag = true;
         workTimeFlag = false;
         console.log("breakTimeFlag:: " + breakTimeFlag);
-        timeText.innerHTML = "";
 
         changeCircleColor();
         checkmark++;
@@ -248,8 +259,6 @@ function updateCountdown() {
 
         return;
     }
-
-    checkForFinishedSet();
 
     timeText.innerHTML = `${minutes} : ${seconds}`;
     timeContainer.append(timeText);
@@ -285,7 +294,7 @@ function resetBreak() {
     // timeText.innerHTML = `${sessionText.innerHTML} : ${"00"}`;
     // time = Number(sessionText.innerHTML) * 60;
     messageText.innerHTML = "";
-    resetCircleColor();
+
 }
 
 function increaseBreak() {
@@ -348,7 +357,12 @@ function updateCountdownBreak() {
 
         changeTimeText();
         stopBreak();
+        resetBreak();
         startWork();
+
+        if (checkmark < 4) {
+            endBreakChime.play();
+        }
 
         return;
     }
@@ -384,7 +398,6 @@ function resetLongBreak() {
     longBreakTimeFlag = true;
     changeTimeText();
     messageText.innerHTML = "";
-    resetCircleColor();
 }
 
 function increaseLongBreak() {
@@ -469,6 +482,8 @@ function checkForFinishedSet() {
         console.log("what is longBreakTimeFlag:: " + longBreakTimeFlag);
         longBreakTimeFlag = true;
         workTimeFlag = true;
+        messageText.innerHTML = "";
+        endCycleChime.play();
         startLongBreak();
         return;
     }
