@@ -16,7 +16,6 @@ body {
   text-align: center;
 }
 
-
 /*
   CSS Varialbles. This turned out to be really useful! I learned from here:
   https://medium.com/@fionnachan/dynamic-number-of-rows-and-columns-with-css-grid-layout-and-css-variables-cb8e8381b6f2
@@ -26,13 +25,13 @@ body {
   --circleColor: white;
 }
 
-
 /* Time Container*/
 /* --------------------------------------- */
 .time-container {
   text-align: center;
-  font-size: 70px;
+  font-size: 100px;
   margin-bottom: -50px;
+  font-family: 'Roboto Mono', monospace;
 }
 
 /* Message Container */
@@ -149,7 +148,7 @@ table {
 }
 
 .adjust-table button {
-  background-color: #911aa3;
+  background-color: #aa65db;
   font-weight: bold;
   color: white;
   border-radius: 20px;
@@ -165,7 +164,7 @@ table {
 }
 
 .adjust-table button:hover {
-  background-color: #c023d9;
+  background-color: #B57EDC;
 }
 
 /* GitHub Button */
@@ -192,4 +191,60 @@ table {
 #github-btn a {
   text-decoration: none;
   color: white;
+}
+
+@media only screen and (max-width: 1000px) {
+
+  .time-container {
+    text-align: center;
+    font-size: 150px;
+    margin-bottom: -50px;
+    font-family: 'Roboto Mono', monospace;
+  }
+
+  .message-container {
+    text-align: center;
+    font-size: 90px;
+    margin-top: -40px;
+    margin-bottom: -50px;
+  }
+
+  .adjust-text {
+    padding-right: 50px;
+    font-size: 50px;
+    font-weight: bold;
+  }
+
+  .session-text, .break-text, .long-break-text {
+    font-size: 35px;
+  }
+
+  .intro h1 {
+    font-size: 70px;
+    text-align: center;
+  }
+
+  .intro p, .intro h2  {
+    font-size: 50px;
+    text-align: center;
+  }
+
+  .control-button {
+    font-size: 5rem;
+  }
+
+  .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px;
+    border-style: solid;
+    border-color: coral;
+  }
+
+  #github-btn {
+    font-size: 40px;
+    width: 250px;
+  }
 }
