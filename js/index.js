@@ -7,38 +7,37 @@ let messageText = document.querySelector(".message-text");
 let breakText = document.querySelector(".break-text");
 let longBreakText = document.querySelector(".long-break-text");
 let titleText = document.querySelector(".title-text");
+let debug = 0;
 
 const WORK_TIME = "Work Time! Focus";
 const BREAK_TIME = "Break Time!";
 const LONG_BREAK_TIME = "Long Break Time!";
 const FINISHED = "You have finished four sets of work! Congrats!";
-// timeText.innerHTML = "25 : 00";
-// sessionText.innerHTML = "25";
-// breakText.innerHTML = "5"
-// longBreakText.innerHTML = "10"
 
-timeText.innerHTML = "1 : 00";
-sessionText.innerHTML = "1";
-breakText.innerHTML = "1";
-longBreakText.innerHTML = "1";
+timeText.innerHTML = "25 : 00";
+sessionText.innerHTML = "25";
+breakText.innerHTML = "5";
+longBreakText.innerHTML = "10";
+
+debug === 1 && (timeText.innerHTML = "1 : 00");
+debug === 1 && (sessionText.innerHTML = "1");
+debug === 1 && (breakText.innerHTML = "1");
+debug === 1 && (longBreakText.innerHTML = "1");
 
 // Variables for Work Time
-// let startingMinutes = 25;
-let startingMinutes = 0.20;
+let startingMinutes = 25;
 let time = startingMinutes * 60;
 let interval = 0;
 let currentSession = Number(sessionText.innerHTML);
 
 // Variables for Break Time
-// let startingBreakMinutes = 5;
-let startingBreakMinutes = 0.20;
+let startingBreakMinutes = 5;
 let breakTime = startingBreakMinutes * 60;
 let intervalBreak = 0;
 let currentBreak = Number(breakText.innerHTML);
 
 // Variables for Long Break Time
-// let startingLongBreakMinutes = 10;
-let startingLongBreakMinutes = 1;
+let startingLongBreakMinutes = 10;
 let longBreakTime = startingLongBreakMinutes * 60;
 let intervalLongBreak = 0;
 let currentLongBreak = Number(longBreakText.innerHTML);
@@ -56,18 +55,21 @@ let isPausedFlag = false;
 let longBreakTimeFlag = false;
 
 // To keep track of sets
-let checkmark = 0;
+let checkMark = 0;
 
+// Audio for break, work, and long break sessions
 let startBreakChime = new Audio("assets/sounds/timer_end.mp3");
 let endBreakChime = new Audio("assets/sounds/break.wav");
 let endCycleChime = new Audio('assets/sounds/long-break.wav');
 
+debug === 1 && (startingMinutes = 0.20);
+debug === 1 && (startingBreakMinutes = 0.20);
+debug === 1 && (startingLongBreakMinutes = 1);
+
 function startButton() {
     console.log("Inside startButton()");
 
-    console.log("breakTimeFlag:: " + breakTimeFlag);
-    console.log("workTimeFlag:: " + workTimeFlag);
-    console.log("longBreakTimeFlag:: " + longBreakTimeFlag);
+    debug === 1 && printFlags();
 
     if (breakTimeFlag) {
         console.log("Going to start break session");
@@ -86,7 +88,6 @@ function startButton() {
     // Will only reach when it is false
     if (!longBreakTimeFlag) {
         console.log("Going to start long break session");
-        // longBreakTimeFlag = false;
         longBreakTimeFlag = true;
         messageText.innerHTML = "";
         startLongBreak();
@@ -97,13 +98,10 @@ function startButton() {
 function stopButton() {
     console.log("Inside stopButton()");
 
-    console.log("breakTimeFlag:: " + breakTimeFlag);
-    console.log("workTimeFlag:: " + workTimeFlag);
-    console.log("longBreakTimeFlag:: " + longBreakTimeFlag);
+    debug === 1 && printFlags();
 
     if (longBreakTimeFlag) {
         console.log("Going to stop long break");
-        // longBreakTimeFlag = true;
         longBreakTimeFlag = false;
         stopLongBreak();
         return;
@@ -127,14 +125,16 @@ function stopButton() {
 function resetButton() {
     console.log("Inside resetButton()");
 
-    console.log("breakTimeFlag:: " + breakTimeFlag);
-    console.log("workTimeFlag:: " + workTimeFlag);
-    console.log("longBreakTimeFlag:: " + longBreakTimeFlag);
+    debug === 1 && printFlags();
 
     if (!longBreakTimeFlag) {
         console.log("Going to reset long break session");
         resetLongBreak();
+        resetBreak();
+        resetWork();
         resetCircleColor();
+        clearTitleText();
+        checkMark = 0;
         return;
     }
 
@@ -142,6 +142,8 @@ function resetButton() {
         console.log("Going to reset work session");
         resetWork();
         resetCircleColor();
+        clearTitleText();
+        checkMark = 0;
         return;
     }
 
@@ -149,6 +151,8 @@ function resetButton() {
         console.log("Going to reset break session");
         resetBreak();
         resetCircleColor();
+        clearTitleText();
+        checkMark = 0;
         return;
     }
 }
@@ -176,20 +180,17 @@ function resetWork() {
     time = startingMinutes * 60;
     interval = 0;
     workTimeFlag = false;
-    changeTimeText();
-    // timeText.innerHTML = `${sessionText.innerHTML} : ${"00"}`;
-    // time = Number(sessionText.innerHTML) * 60;
+    changeTimeTextForWorkSession();
     messageText.innerHTML = "";
 }
 
 function increaseSession() {
     console.log("Inside increaseSession()");
-    console.log("what is workTimeFlag:: " + workTimeFlag);
-    console.log("what is breakTimeFlag:: " + breakTimeFlag);
 
     if (currentSession === 60) {
         return;
     }
+
     currentSession++;
     sessionText.innerHTML = currentSession;
 
@@ -197,14 +198,12 @@ function increaseSession() {
     // and when work time has not started
     // this means that workTimeFlag and breakTimeFlag have to be false
     if (!workTimeFlag && breakTimeFlag === false) {
-        changeTimeText();
+        changeTimeTextForWorkSession();
     }
 }
 
 function decreaseSession() {
     console.log("Inside decreaseSession()");
-    console.log("what is workTimeFlag:: " + workTimeFlag);
-    console.log("what is breakTimeFlag:: " + breakTimeFlag);
 
     if (currentSession === 1) {
         return;
@@ -217,51 +216,27 @@ function decreaseSession() {
     // and when work time has not started
     // this means that workTimeFlag and breakTimeFlag have to be false
     if (!workTimeFlag && breakTimeFlag === false) {
-        changeTimeText();
+        changeTimeTextForWorkSession();
     }
 }
 
 function updateCountdown() {
     console.log("Inside updateCountdown()");
-    console.log("What is time:: " + time);
 
-    changeTitleText();
+    let timeArray = calculateMinutesAndSeconds(time);
+    const minutes = timeArray[0];
+    let seconds = timeArray[1];
 
-    const minutes = Math.floor(time / 60);
-    let seconds = time % 60;
+    debug === 1 && printTimes(minutes, seconds);
 
-    console.log("minutes:: " + minutes);
-    console.log("seconds:: " + seconds);
-
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-
-    checkForFinishedSet();
+    seconds = updateSecondsForLessThan10(seconds);
 
     if (minutes === 0 && seconds === "00") {
-        console.log("Break time Start");
-
-        startBreakChime.play();
-
-        console.log("breakTimeFlag:: " + breakTimeFlag);
-        breakTimeFlag = true;
-        workTimeFlag = false;
-        console.log("breakTimeFlag:: " + breakTimeFlag);
-
-        changeCircleColor();
-        checkmark++;
-        console.log("What is checkmark::" + checkmark);
-
-        stopWork();
-        // resetBreak();
-        startBreak();
-
-        return;
+        // Work is over so start break session
+        startBreakSession();
     }
 
-    timeText.innerHTML = `${minutes} : ${seconds}`;
-    timeContainer.append(timeText);
+    changeTimeText(minutes, seconds);
 
     time--;
 }
@@ -290,17 +265,12 @@ function resetBreak() {
     breakTime = startingBreakMinutes * 60;
     intervalBreak = 0;
     breakTimeFlag = false;
-    changeTimeText();
-    // timeText.innerHTML = `${sessionText.innerHTML} : ${"00"}`;
-    // time = Number(sessionText.innerHTML) * 60;
+    changeTimeTextForWorkSession();
     messageText.innerHTML = "";
-
 }
 
 function increaseBreak() {
     console.log("Inside increaseBreak()");
-    console.log("what is workTimeFlag:: " + workTimeFlag);
-    console.log("what is breakTimeFlag:: " + breakTimeFlag);
 
     if (currentBreak === 60) {
         return;
@@ -335,40 +305,21 @@ function decreaseBreak() {
 
 function updateCountdownBreak() {
     console.log("Inside updateCountdownBreak()");
-    console.log("breakTime will be:: " + breakTime);
 
-    changeTitleText();
+    let timeArray = calculateMinutesAndSeconds(breakTime);
+    const minutes = timeArray[0];
+    let seconds = timeArray[1];
 
-    const minutes = Math.floor(breakTime / 60);
-    let seconds = breakTime % 60;
+    debug === 1 && printTimes(minutes, seconds);
 
-    console.log("minutes:: " + minutes);
-    console.log("seconds:: " + seconds);
-
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
+    seconds = updateSecondsForLessThan10(seconds);
 
     if (minutes === 0 && seconds === "00") {
-        console.log("Break Time Finished. Start another set of work");
-
-        breakTimeFlag = false;
-        workTimeFlag = true;
-
-        changeTimeText();
-        stopBreak();
-        resetBreak();
-        startWork();
-
-        if (checkmark < 4) {
-            endBreakChime.play();
-        }
-
-        return;
+        // Break is over so start work session
+        startWorkSession();
     }
 
-    timeText.innerHTML = `${minutes} : ${seconds}`;
-    timeContainer.append(timeText);
+    changeTimeText(minutes, seconds);
 
     breakTime--;
 }
@@ -395,8 +346,8 @@ function resetLongBreak() {
     clearInterval(intervalLongBreak);
     longBreakTime = startingLongBreakMinutes * 60;
     intervalLongBreak = 0;
-    longBreakTimeFlag = true;
-    changeTimeText();
+    longBreakTimeFlag = false;
+    changeTimeTextForWorkSession();
     messageText.innerHTML = "";
 }
 
@@ -437,31 +388,20 @@ function decreaseLongBreak() {
 function updateCountdownLongBreak() {
     console.log("Inside updateCountdownLongBreak()");
 
-    changeTitleText();
+    let timeArray = calculateMinutesAndSeconds(longBreakTime);
+    const minutes = timeArray[0];
+    let seconds = timeArray[1];
 
-    const minutes = Math.floor(longBreakTime / 60);
-    let seconds = longBreakTime % 60;
+    debug === 1 && printTimes(minutes, seconds);
 
-    console.log("minutes:: " + minutes);
-    console.log("seconds:: " + seconds);
-
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    console.log("What is longBreakTimeFlag:: " + longBreakTimeFlag);
+    seconds = updateSecondsForLessThan10(seconds);
 
     if (minutes === 0 && seconds === "00") {
-        console.log("We have finished the long break");
-        stopLongBreak();
-        resetLongBreak();
-        changeFinalMessageText();
-        longBreakTimeFlag = false;
-        workTimeFlag = false;
-        return;
+        // Long break is over so reset everything to the beginning
+        finishedLongBreakSession();
     }
 
-    timeText.innerHTML = `${minutes} : ${seconds}`;
-    timeContainer.append(timeText);
+    changeTimeText(minutes, seconds);
 
     longBreakTime--;
 }
@@ -469,22 +409,97 @@ function updateCountdownLongBreak() {
 // ------------------------------------------------------------------------------
 // Functions to facilitate resets and changing content
 // ------------------------------------------------------------------------------
+function updateSecondsForLessThan10(seconds) {
+    // This function appends an extra zero to numbers that are single digit
+
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+
+    return seconds;
+}
+
+function calculateMinutesAndSeconds(time) {
+
+    const minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+
+    return [minutes, seconds];
+}
+
+function startBreakSession() {
+    console.log("Work time finished. Break time Start");
+
+    startBreakChime.play();
+
+    // Flags needed for break session to start
+    breakTimeFlag = true;
+    workTimeFlag = false;
+
+    changeCircleColor();
+    checkMark++;
+
+    stopWork();
+    startBreak();
+
+    return;
+
+}
+function startWorkSession() {
+    console.log("Break time finished. Start another set of work");
+
+    breakTimeFlag = false;
+    workTimeFlag = true;
+
+    changeTimeTextForWorkSession();
+
+    stopBreak();
+    resetBreak();
+
+    // If checkMark is less than 4 that means that we can do another session of work
+    if (checkMark < 4) {
+        endBreakChime.play();
+        startWork();
+    }
+
+    // If checkMark is 4 then we are finished
+    checkForFinishedSet();
+
+    return;
+}
+
+function finishedLongBreakSession() {
+    console.log("Inside finishedLongBreakSession()");
+
+    console.log("We have finished the long break");
+    stopLongBreak();
+    resetLongBreak();
+    changeFinalMessageText();
+    longBreakTimeFlag = false;
+    workTimeFlag = false;
+    clearTitleText();
+
+    return;
+}
+
 function checkForFinishedSet() {
     console.log("Inside checkForFinishedSet()");
 
-    if (checkmark === 4) {
-        console.log("Checkmark is 4");
+    if (checkMark === 4) {
+        console.log("Checkmark is 4. Now we going to prepare to start Long Break");
+
         resetWork();
         resetBreak();
 
-        console.log("what is workTimeFlag:: " + workTimeFlag);
-        console.log("what is breakTimeFlag:: " + breakTimeFlag);
-        console.log("what is longBreakTimeFlag:: " + longBreakTimeFlag);
+        debug === 1 && printFlags();
+
         longBreakTimeFlag = true;
         workTimeFlag = true;
+
         messageText.innerHTML = "";
         endCycleChime.play();
         startLongBreak();
+
         return;
     }
 }
@@ -492,7 +507,7 @@ function checkForFinishedSet() {
 function resetCircleColor() {
     console.log("Inside resetCircleColor");
 
-    for (let i = 0; i < checkmark; i++) {
+    for (let i = 0; i < checkMark; i++) {
         let circle = document.querySelector(".circle" + "-" + i);
         circle.setAttribute("style", "background-color: none");
     }
@@ -501,15 +516,22 @@ function resetCircleColor() {
 function changeCircleColor() {
     console.log("Inside changeCircleColor");
 
-    let circle = document.querySelector(".circle" + "-" + checkmark);
+    let circle = document.querySelector(".circle" + "-" + checkMark);
     circle.setAttribute("style", "background-color: coral");
 }
 
-function changeTimeText() {
+function changeTimeTextForWorkSession() {
     console.log("Inside changeTimeText()");
 
     timeText.innerHTML = `${currentSession} : ${"00"}`;
     time = currentSession * 60;
+}
+
+function clearTitleText() {
+    console.log("Inside clearTitleText()");
+
+    titleText.innerHTML = "The Odin Project: Pomodoro";
+    return;
 }
 
 function changeTitleText() {
@@ -535,7 +557,30 @@ function changeTitleText() {
     }
 }
 
+function changeTimeText(minutes, seconds) {
+    console.log("Inside changeTimeText()");
+
+    timeText.innerHTML = `${minutes} : ${seconds}`;
+    timeContainer.append(timeText);
+
+    changeTitleText();
+}
+
 function changeFinalMessageText() {
+    console.log("Inside changeFinalMessageText()");
+
     messageText.innerHTML = FINISHED;
 }
 
+function printFlags() {
+
+    console.log("breakTimeFlag:: " + breakTimeFlag);
+    console.log("workTimeFlag:: " + workTimeFlag);
+    console.log("longBreakTimeFlag:: " + longBreakTimeFlag);
+}
+
+function printTimes(minutes, seconds) {
+
+    console.log("minutes:: " + minutes);
+    console.log("seconds:: " + seconds);
+}
