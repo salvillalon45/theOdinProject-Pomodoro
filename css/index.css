@@ -31,6 +31,7 @@ body {
   text-align: center;
   font-size: 100px;
   margin-bottom: -50px;
+  margin-top: -50px;
   font-family: 'Roboto Mono', monospace;
 }
 
@@ -38,7 +39,7 @@ body {
 /* --------------------------------------- */
 .message-container {
   text-align: center;
-  font-size: 50px;
+  font-size: 60px;
   margin-top: -40px;
   margin-bottom: -50px;
 }
@@ -120,7 +121,7 @@ table {
 
 .adjust-text {
   padding-right: 50px;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
 }
 
@@ -165,6 +166,10 @@ table {
 
 .adjust-table button:hover {
   background-color: #B57EDC;
+}
+
+.session-text, .break-text, .long-break-text {
+  font-size: 25px;
 }
 
 /* GitHub Button */

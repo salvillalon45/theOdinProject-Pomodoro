@@ -7,7 +7,7 @@ let messageText = document.querySelector(".message-text");
 let breakText = document.querySelector(".break-text");
 let longBreakText = document.querySelector(".long-break-text");
 let titleText = document.querySelector(".title-text");
-let debug = 0;
+let debug = 1;
 
 const WORK_TIME = "Work Time! Focus";
 const BREAK_TIME = "Break Time!";
@@ -81,6 +81,7 @@ function startButton() {
     if (!isPausedFlag  && !workTimeFlag) {
         console.log("Going to start work session");
         workTimeFlag = true;
+        longBreakTimeFlag = true;
         startWork();
         return;
     }
