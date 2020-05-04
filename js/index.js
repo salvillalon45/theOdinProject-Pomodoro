@@ -7,7 +7,7 @@ let messageText = document.querySelector(".message-text");
 let breakText = document.querySelector(".break-text");
 let longBreakText = document.querySelector(".long-break-text");
 let titleText = document.querySelector(".title-text");
-let debug = 1;
+let debug = 0;
 
 const WORK_TIME = "Work Time! Focus";
 const BREAK_TIME = "Break Time!";
