@@ -71,26 +71,32 @@ function startButton() {
 
     debug === 1 && printFlags();
 
-    if (breakTimeFlag) {
-        console.log("Going to start break session");
-        breakTimeFlag = true;
-        startBreak();
-        return;
-    }
-
-    if (!isPausedFlag  && !workTimeFlag) {
+    if (!isPausedFlag  && !workTimeFlag && longBreakTimeFlag === false && breakTimeFlag === false) {
         console.log("Going to start work session");
         workTimeFlag = true;
-        longBreakTimeFlag = true;
+        // longBreakTimeFlag = true;
+        debug === 1 && printFlags();
         startWork();
         return;
     }
 
+    if (breakTimeFlag === false && workTimeFlag === false && longBreakTimeFlag === false && isPausedFlag === true) {
+        console.log("Going to start break session");
+        breakTimeFlag = true;
+        isPausedFlag = false;
+        // workTimeFlag = true;
+        // longBreakTimeFlag = true;
+        debug === 1 && printFlags();
+        startBreak();
+        return;
+    }
+
     // Will only reach when it is false
-    if (!longBreakTimeFlag) {
+    if (!longBreakTimeFlag && workTimeFlag === false && breakTimeFlag === false) {
         console.log("Going to start long break session");
         longBreakTimeFlag = true;
         messageText.innerHTML = "";
+        debug === 1 && printFlags();
         startLongBreak();
         return;
     }
@@ -101,24 +107,31 @@ function stopButton() {
 
     debug === 1 && printFlags();
 
-    if (longBreakTimeFlag) {
-        console.log("Going to stop long break");
-        longBreakTimeFlag = false;
-        stopLongBreak();
+    if (workTimeFlag && longBreakTimeFlag === false && breakTimeFlag === false) {
+        console.log("Going to stop work");
+        workTimeFlag = false;
+        debug === 1 && printFlags();
+        stopWork();
         return;
     }
 
-    if (breakTimeFlag) {
+    if (breakTimeFlag && longBreakTimeFlag === false && workTimeFlag === false && isPausedFlag === false) {
         console.log("Going to stop break");
-        breakTimeFlag = true;
+        breakTimeFlag = false;
+        isPausedFlag = true;
+        // breakTimeFlag = true;
+        // workTimeFlag = false;
+        // longBreakTimeFlag = false;
+        debug === 1 && printFlags();
         stopBreak();
         return;
     }
 
-    if (workTimeFlag) {
-        console.log("Going to stop work");
-        workTimeFlag = false;
-        stopWork();
+    if (longBreakTimeFlag) {
+        console.log("Going to stop long break");
+        longBreakTimeFlag = false;
+        debug === 1 && printFlags();
+        stopLongBreak();
         return;
     }
 }
@@ -128,8 +141,8 @@ function resetButton() {
 
     debug === 1 && printFlags();
 
-    if (!longBreakTimeFlag) {
-        console.log("Going to reset long break session");
+    if (workTimeFlag) {
+        console.log("Going to reset work session");
         resetLongBreak();
         resetBreak();
         resetWork();
@@ -139,8 +152,10 @@ function resetButton() {
         return;
     }
 
-    if (workTimeFlag) {
-        console.log("Going to reset work session");
+    if (breakTimeFlag) {
+        console.log("Going to reset break session");
+        resetLongBreak();
+        resetBreak();
         resetWork();
         resetCircleColor();
         clearTitleText();
@@ -148,9 +163,11 @@ function resetButton() {
         return;
     }
 
-    if (breakTimeFlag) {
-        console.log("Going to reset break session");
+    if (!longBreakTimeFlag) {
+        console.log("Going to reset long break session");
+        resetLongBreak();
         resetBreak();
+        resetWork();
         resetCircleColor();
         clearTitleText();
         checkMark = 0;
@@ -266,6 +283,7 @@ function resetBreak() {
     breakTime = startingBreakMinutes * 60;
     intervalBreak = 0;
     breakTimeFlag = false;
+    isPausedFlag = false;
     changeTimeTextForWorkSession();
     messageText.innerHTML = "";
 }
@@ -436,6 +454,11 @@ function startBreakSession() {
     // Flags needed for break session to start
     breakTimeFlag = true;
     workTimeFlag = false;
+    isPausedFlag = false;
+    // workTimeFlag = true;
+    // longBreakTimeFlag = true;
+
+    debug === 1 && printFlags();
 
     changeCircleColor();
     checkMark++;
@@ -451,6 +474,7 @@ function startWorkSession() {
 
     breakTimeFlag = false;
     workTimeFlag = true;
+    isPausedFlag = false;
 
     changeTimeTextForWorkSession();
 
@@ -539,21 +563,21 @@ function changeTitleText() {
     console.log("Inside changeTitleText()");
     console.log("What is longBreakTimeFlag:: " + longBreakTimeFlag);
 
-    if (longBreakTimeFlag) {
-        console.log("Changing title during long break");
-        titleText.innerHTML = timeText.innerHTML + " " + LONG_BREAK_TIME;
-        return;
-    }
-
-    if (workTimeFlag === true && breakTimeFlag === false) {
+    if (workTimeFlag === true && breakTimeFlag === false && longBreakTimeFlag === false) {
         console.log("Changing title during work time");
         titleText.innerHTML = timeText.innerHTML + " " + WORK_TIME;
         return;
     }
 
-    if (workTimeFlag === false && breakTimeFlag === true) {
+    if (workTimeFlag === false && breakTimeFlag === true && longBreakTimeFlag === false) {
         console.log("Changing title during break time");
         titleText.innerHTML = timeText.innerHTML + " " + BREAK_TIME;
+        return;
+    }
+
+    if (longBreakTimeFlag && workTimeFlag && breakTimeFlag === false) {
+        console.log("Changing title during long break");
+        titleText.innerHTML = timeText.innerHTML + " " + LONG_BREAK_TIME;
         return;
     }
 }
